@@ -10,7 +10,7 @@
       <SiderMenu :collapsed="false"></SiderMenu>
     </el-drawer>
     <SiderMenu :collapsed="isMobile ? true : collapsed"></SiderMenu>
-    <el-container>
+    <el-container class="beauty-scroll">
       <el-header :style="{padding:0}">
         <Header :collapsed="collapsed" @collapse="handleCollapsed"></Header>
       </el-header>
@@ -63,6 +63,13 @@ export default {
   background: #f0f2f5;
 }
 
+.beauty-scroll {
+  overflow-x: hidden;
+}
+
+.el-main {
+  overflow: visible;
+}
 .el-footer {
   line-height: 60px;
   font-size: 14px;

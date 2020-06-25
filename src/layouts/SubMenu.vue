@@ -1,17 +1,25 @@
-<template>
-    <el-submenu index="1">
-      <template slot="title">
-        <i class="el-icon-setting"></i>
-        <span slot="title">系统管理</span>
-      </template>
-      <el-menu-item index="1-1">
-        <i class="el-icon-user"></i>
-        <span slot="title">用户列表</span>
+<template >
+  <el-submenu :index="menuInfo.path">
+    <template slot="title">
+      <i :class="menuInfo.icon"></i>
+      <span slot="title">{{menuInfo.name}}</span>
+    </template>
+    <template v-for="item in menuInfo.children">
+      <el-menu-item
+        :index="item.path"
+        :key="item.path"
+      >
+        <span slot="title" style="padding-left: 20px;">{{item.name}}</span>
       </el-menu-item>
-    </el-submenu>
+    </template>
+  </el-submenu>
 </template>
 
 
 <script>
-export default {};
+export default {
+  props: {
+    menuInfo: {}
+  }
+};
 </script>
