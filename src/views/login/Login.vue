@@ -80,10 +80,10 @@ export default {
       this.$refs["dataForm"].validate(valid => {
         if (valid) {
           const loginParams = { ...this.entity };
-          loginParams.name = md5(this.entity.password);
+          loginParams.password = md5(this.entity.password);
           Login(loginParams)
-            .then(res => this.loginSuccess(res))
-            .catch(err => this.requestFailed(err))
+            .then(() => this.loginSuccess())
+            .catch(() => this.requestFailed())
             .finally(() => {
               state.loading = false;
             });
@@ -95,8 +95,7 @@ export default {
         }
       });
     },
-    loginSuccess(res) {
-      console.log(res);
+    loginSuccess() {
       this.$router.push({ path: "/" });
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
@@ -107,13 +106,12 @@ export default {
         });
       }, 1000);
     },
-    requestFailed(err) {
-      console.log(err);
-     this.$notify({
-          title: "登录失败",
-          message: `请求出现错误，请稍后再试`,
-          type: "error"
-        });
+    requestFailed() {
+      this.$notify({
+        title: "登录失败",
+        message: `请求出现错误，请稍后再试`,
+        type: "error"
+      });
     }
   }
 };

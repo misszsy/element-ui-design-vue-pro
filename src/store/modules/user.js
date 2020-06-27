@@ -7,6 +7,7 @@ const user = {
         token: "",
         name: "",
         avatar: "",
+        profile: false,
         info: {}
     },
 
@@ -16,6 +17,9 @@ const user = {
         },
         SET_NAME: (state, name) => {
             state.name = name
+        },
+        SET_PROFILE: (state, profile) => {
+            state.profile = profile
         },
         SET_INFO: (state, info) => {
             state.info = info
@@ -27,7 +31,6 @@ const user = {
             return new Promise((resolve, reject) => {
                 login(userInfo).then(response => {
                     const data = response.data;
-                    debugger
                     storage.set(ACCESS_TOKEN, data.token, 7 * 24 * 60 * 60 * 1000)
                     commit("SET_TOKEN", data.token);
                     resolve()
@@ -42,6 +45,7 @@ const user = {
                 getInfo().then(response => {
                     const data = response.data
                     commit('SET_INFO', data)
+                    commit('SET_PROFILE', true)
                     commit('SET_NAME', data.name)
                     resolve(response)
                 }).catch(error => {
@@ -51,11 +55,12 @@ const user = {
         },
         Logout({ commit, state }) {
             return new Promise((resolve) => {
-                logout(state.token).token(() => {
+                logout(state.token).then(() => {
                     resolve()
                 }).catch(() => {
                     resolve()
                 }).finally(() => {
+                    commit('SET_PROFILE', false)
                     commit('SET_TOKEN', '')
                     storage.remove(ACCESS_TOKEN)
                 })

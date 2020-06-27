@@ -1,4 +1,5 @@
 import Vue from "vue";
+import store from '@/store'
 import storage from "store";
 import VueRouter from "vue-router";
 import NProgress from "nprogress";
@@ -7,13 +8,14 @@ import Login from "@/views/login/Login";
 import NotFound from "@/components/exception/404";
 import Forbidden from "@/components/exception/403";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
+import { Notification } from "element-ui"
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/login",
-    name: "登录页",
+    name: "login",
     component: Login,
     hideInMenu: true
   },
@@ -80,6 +82,9 @@ const router = new VueRouter({
   routes
 });
 
+//是否显示环形进度条
+NProgress.configure({ showSpinner: false });
+
 //白名单地址
 const whiteList = ['login']
 const loginRoutePath = "/login";
@@ -92,7 +97,34 @@ router.beforeEach((to, from, next) => {
       next({ path: defaultRoutePath })
       NProgress.done();
     } else {
-      next()
+      //判断是否有用户信息
+      console.log(store)
+      if (!store.getters.profile) {
+        store
+          .dispatch('GetInfo').then(() => {
+            // 请求带有 redirect 重定向时，登录自动重定向到该地址
+            const redirect = decodeURIComponent(from.query.redirect || to.path)
+            if (to.path === redirect) {
+              // set the replace: true so the navigation will not leave a history record
+              next({ ...to, replace: true })
+            } else {
+              // 跳转到目的路由
+              next({ path: redirect })
+            }
+          }).catch(() => {
+            Notification({
+              title: "错误",
+              message: `获取用户信息失败，请重试`,
+              type: "error"
+            });
+            // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
+            store.dispatch('Logout').then(() => {
+              next({ path: loginRoutePath, query: { redirect: to.fullPath } })
+            })
+          })
+      } else {
+        next();
+      }
     }
   } else {
     if (whiteList.includes(to.name)) {

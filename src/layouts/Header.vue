@@ -9,15 +9,24 @@
     <div class="global-header-right">
       <NoticeIcon class="header-action notice" :notices="noticeTabs" />
       <div class="header-action">
-        <el-dropdown>
+        <el-dropdown @command="handleCommand">
           <span class="action account">
-            <el-avatar class="avatar" size="small" icon="el-icon-user-solid" />
-            <span>周盛源</span>
+            <el-avatar
+              class="avatar"
+              size="small"
+              icon="el-icon-user-solid"
+              :src="userInfo.avatar"
+            />
+            <span>{{userInfo.name}}</span>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-edit">修改密码</el-dropdown-item>
-            <el-dropdown-item icon="el-icon-switch-button" divided>退出登录</el-dropdown-item>
+            <el-dropdown-item command="a" icon="el-icon-user">个人中心</el-dropdown-item>
+            <el-dropdown-item command="b" icon="el-icon-edit">修改密码</el-dropdown-item>
+            <el-dropdown-item
+              command="c"
+              icon="el-icon-switch-button"
+              divided
+            >退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -27,6 +36,7 @@
 
 <script>
 import NoticeIcon from "../components/noticeIcon";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -36,6 +46,9 @@ export default {
     collapsed: {
       type: Boolean
     }
+  },
+  computed: {
+    ...mapGetters(["userInfo"])
   },
   data() {
     return {
@@ -133,6 +146,30 @@ export default {
     handleTrigger() {
       const { collapsed } = this;
       this.$emit("collapse", !collapsed);
+    },
+    handleCommand(command) {
+      switch (command) {
+        case "a":
+          break;
+        case "b":
+          break;
+        case "c":
+          this.handleLogout();
+          break;
+      }
+    },
+    handleLogout() {
+      this.$confirm("是否确定退出登录?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store.dispatch("Logout").then(() => {
+            this.$router.push({ name: "login" });
+          });
+        })
+        .catch(() => {});
     }
   }
 };

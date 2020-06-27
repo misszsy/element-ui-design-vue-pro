@@ -2,8 +2,8 @@ import request from "@/utils/request";
 
 const userApi = {
     Login: "/login",
-    Logout: "/logout",
-    UserInfo: "/user/info"
+    Logout: "/exit",
+    UserInfo: "/user/profile"
 }
 
 
@@ -30,7 +30,7 @@ export function getInfo() {
 
 export function logout() {
     return request({
-        url: userApi.logout,
+        url: userApi.Logout,
         method: "post",
         headers: {
             'Content-Type': 'application/json;charset=UTF-8'

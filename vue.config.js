@@ -22,7 +22,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/admin': {
-                target: 'http://service.ss0732.com/',
+                target: 'http://localhost:8085/',
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
