@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import NoticeIcon from "../components/NoticeIcon";
+import NoticeIcon from "../components/noticeIcon";
 
 export default {
   components: {

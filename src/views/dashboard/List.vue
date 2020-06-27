@@ -61,14 +61,14 @@
     <el-card shadow="always">
       <div class="table-list-operator">
         <el-button size="small" type="primary" icon="el-icon-plus">新增</el-button>
-        <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-          <el-button size="small" icon="el-icon-refresh-right" circle></el-button>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="导出" placement="top">
-          <el-button size="small" icon="el-icon-upload2" circle></el-button>
-        </el-tooltip>
         <el-tooltip class="item" effect="dark" content="批量删除" placement="top">
           <el-button size="small" icon="el-icon-delete-solid" circle></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="导出" placement="top">
+          <el-button size="small" icon="el-icon-download" circle></el-button>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="刷新" placement="top">
+          <el-button size="small" icon="el-icon-refresh-right" circle></el-button>
         </el-tooltip>
       </div>
       <el-table :data="tableData" border stripe>
@@ -115,8 +115,7 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-    },
+    onSubmit() {},
     toggleAdvanced() {
       this.advanced = !this.advanced;
     }
@@ -149,7 +148,7 @@ export default {
   }
 }
 .table-list-operator {
-  text-align: right;
+  text-align: center;
   margin-bottom: 20px;
 }
 </style>

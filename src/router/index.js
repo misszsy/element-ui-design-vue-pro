@@ -1,13 +1,22 @@
 import Vue from "vue";
+import storage from "store";
 import VueRouter from "vue-router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import NotFound from "../components/exception/404";
-import Forbidden from "../components/exception/403";
+import Login from "@/views/login/Login";
+import NotFound from "@/components/exception/404";
+import Forbidden from "@/components/exception/403";
+import { ACCESS_TOKEN } from "@/store/mutation-types";
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: "/login",
+    name: "登录页",
+    component: Login,
+    hideInMenu: true
+  },
   {
     path: "/",
     component: () => import("../layouts/BasicLayouts"),
@@ -71,11 +80,32 @@ const router = new VueRouter({
   routes
 });
 
+//白名单地址
+const whiteList = ['login']
+const loginRoutePath = "/login";
+const defaultRoutePath = "/dashboard/tableList";
+
 router.beforeEach((to, from, next) => {
-  if (to.path !== from.path) {
-    NProgress.start();
+  NProgress.start();
+  if (storage.get(ACCESS_TOKEN)) {
+    if (to.path === loginRoutePath) {
+      next({ path: defaultRoutePath })
+      NProgress.done();
+    } else {
+      next()
+    }
+  } else {
+    if (whiteList.includes(to.name)) {
+      next()
+    } else {
+      next({ path: loginRoutePath, query: { redirect: to.fullPath } })
+      NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
+    }
   }
-  next();
+  // if (to.path !== from.path) {
+  //   NProgress.start();
+  // }
+  // next();
 });
 
 router.afterEach(() => {
