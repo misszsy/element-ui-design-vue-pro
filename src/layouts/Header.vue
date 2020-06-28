@@ -20,13 +20,8 @@
             <span>{{userInfo.name}}</span>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="a" icon="el-icon-user">个人中心</el-dropdown-item>
-            <el-dropdown-item command="b" icon="el-icon-edit">修改密码</el-dropdown-item>
-            <el-dropdown-item
-              command="c"
-              icon="el-icon-switch-button"
-              divided
-            >退出登录</el-dropdown-item>
+            <el-dropdown-item command="a" icon="el-icon-user">个人设置</el-dropdown-item>
+            <el-dropdown-item command="c" icon="el-icon-switch-button" divided>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -150,6 +145,7 @@ export default {
     handleCommand(command) {
       switch (command) {
         case "a":
+          this.handleSettings();
           break;
         case "b":
           break;
@@ -157,6 +153,9 @@ export default {
           this.handleLogout();
           break;
       }
+    },
+    handleSettings() {
+      this.$router.push({ path: "/user/settings" });
     },
     handleLogout() {
       this.$confirm("是否确定退出登录?", "提示", {

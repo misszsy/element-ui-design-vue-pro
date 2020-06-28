@@ -11,19 +11,24 @@
     >
       <div class="logo">Element UI Vue Pro</div>
       <template v-for="menu in menuData">
-        <SubMenu :menuInfo="menu" :key="menu.path"></SubMenu>
+        <el-submenu :index="menu.path" :key="menu.path">
+          <template slot="title">
+            <i :class="menu.icon"></i>
+            <span slot="title">{{menu.name}}</span>
+          </template>
+          <template v-for="item in menu.children">
+            <el-menu-item :index="item.path" :key="item.path">
+              <span slot="title" style="padding-left: 20px;">{{item.name}}</span>
+            </el-menu-item>
+          </template>
+        </el-submenu>
       </template>
     </el-menu>
   </el-aside>
 </template>
 
 <script>
-import SubMenu from "./SubMenu";
-
 export default {
-  components: {
-    SubMenu
-  },
   props: {
     collapsed: {
       type: Boolean

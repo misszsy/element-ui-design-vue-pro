@@ -12,7 +12,6 @@ export default {
   created() {
     let _this = this;
     enquireScreen(isMobile => {
-      console.log("deviceType", isMobile);
       _this.$store.commit("setting/setDevice", isMobile);
     });
   }

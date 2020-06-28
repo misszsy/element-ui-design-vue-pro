@@ -71,12 +71,18 @@
           <el-button size="small" icon="el-icon-refresh-right" circle></el-button>
         </el-tooltip>
       </div>
-      <el-table :data="tableData" border stripe>
+      <el-table
+        :data="dataList"
+        v-loading="listLoading"
+        element-loading-text="给我一点时间"
+        border
+        stripe
+      >
         <el-table-column label="序号" align="center" type="index"></el-table-column>
-        <el-table-column prop="name" label="姓名" align="center"></el-table-column>
-        <el-table-column prop="date" label="日期" align="center"></el-table-column>
-        <el-table-column prop="address" label="地址" align="center"></el-table-column>
-        <el-table-column prop="address" label="操作" align="center">
+        <el-table-column prop="title" label="标题" align="center"></el-table-column>
+        <el-table-column prop="author" label="作者" align="center"></el-table-column>
+        <el-table-column prop="tags" label="标签" align="center"></el-table-column>
+        <el-table-column prop="digest" label="摘要" align="center">
           <template>
             <el-button type="text" size="small">查看</el-button>
             <el-button type="text" size="small">编辑</el-button>
@@ -87,10 +93,13 @@
       <div class="pagination-container" style="padding-top: 20px;text-align:right;">
         <el-pagination
           background
-          :page-sizes="[100, 200, 400]"
-          :page-size="100"
+          :page-sizes="[20, 50, 100]"
           layout="total, prev, pager, next,sizes"
-          :total="100"
+          :total="total"
+          :current-page="listQuery.pageNum"
+          :page-size="listQuery.pageSize"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
         ></el-pagination>
       </div>
     </el-card>
@@ -98,23 +107,44 @@
 </template>
 
 <script>
+import { pageList } from "@/api/article";
+
 export default {
   name: "tableList",
   data() {
-    const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄"
-    };
     return {
       // 高级搜索 展开/关闭
       advanced: false,
-      //查询参数
       queryParam: {},
-      tableData: Array(15).fill(item)
+      dataList: null,
+      total: null,
+      listLoading: true,
+      listQuery: {
+        pageNum: 1,
+        pageSize: 20
+      }
     };
   },
+  created() {
+    this.getDataList();
+  },
   methods: {
+    getDataList() {
+      let _this = this;
+      pageList(_this.listQuery).then(data => {
+        _this.dataList = data.data.records;
+        _this.total = data.data.total;
+        _this.listLoading = false;
+      });
+    },
+    handleCurrentChange(val) {
+      this.listQuery.pageNum = val;
+      this.getDataList();
+    },
+    handleSizeChange(val) {
+      this.listQuery.pageSize = val;
+      this.getDataList();
+    },
     onSubmit() {},
     toggleAdvanced() {
       this.advanced = !this.advanced;

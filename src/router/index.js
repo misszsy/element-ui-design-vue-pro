@@ -9,6 +9,7 @@ import NotFound from "@/components/exception/404";
 import Forbidden from "@/components/exception/403";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 import { Notification } from "element-ui"
+import RouteView from "@/layouts/RouteView";
 
 Vue.use(VueRouter);
 
@@ -31,12 +32,12 @@ const routes = [
         path: "/dashboard",
         name: "Dashboard",
         icon: "el-icon-s-home",
-        component: { render: h => h("router-view") },
+        component: RouteView,
         children: [
           {
             path: "/dashboard/tableList",
             name: "查询列表",
-            icon: "el-icon-info",
+            meta: { keepAlive: true },
             component: () =>
               import(
                 /* webpackChunkName: "dashboard" */ "../views/dashboard/List"
@@ -48,16 +49,33 @@ const routes = [
         path: "/user",
         name: "个人中心",
         icon: "el-icon-user",
-        component: { render: h => h("router-view") },
+        component: RouteView,
+        meta: { keepAlive: true },
         children: [
           {
-            path: "/user/profile",
-            name: "个人信息",
-            icon: "el-icon-info",
+            path: "/user/settings",
+            name: "个人设置",
+            meta: { keepAlive: true },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/user/Profile"
-              )
+                /* webpackChunkName: "dashboard" */ "../views/user/settings/Index"
+              ),
+            redirect: '/user/settings/base',
+            hideChildrenInMenu: true,
+            children: [
+              {
+                path: "/user/settings/base",
+                name: "基本设置",
+                meta: { hidden: true, keepAlive: true },
+                component: () => import('../views/user/settings/BaseSetting'),
+              },
+              {
+                path: "/user/settings/security",
+                name: "安全设置",
+                meta: { hidden: true, keepAlive: true },
+                component: () => import('../views/user/settings/Security'),
+              },
+            ]
           }
         ]
       }
@@ -69,7 +87,7 @@ const routes = [
     component: Forbidden
   },
   {
-    path: "*",
+    path: "/404",
     name: "404",
     hideInMenu: true,
     component: NotFound
@@ -98,7 +116,6 @@ router.beforeEach((to, from, next) => {
       NProgress.done();
     } else {
       //判断是否有用户信息
-      console.log(store)
       if (!store.getters.profile) {
         store
           .dispatch('GetInfo').then(() => {
