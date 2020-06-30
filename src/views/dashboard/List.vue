@@ -7,6 +7,19 @@
 import DataTable from "@/components/table";
 import { commonDict } from "@/utils/dict/index";
 
+export default {
+  components: {
+    DataTable
+  },
+  data() {
+    return {
+      resource: "article", //必写信息,用于请求后台对应资源链接
+      columns: columns
+    };
+  },
+  methods: {}
+};
+
 //属性列表
 const columns = [
   {
@@ -18,6 +31,17 @@ const columns = [
       type: "input", //默认为input,可不写
       placeholder: "请输入标题信息",
       rules: [{ required: true, message: "标题不能为空" }]
+    }
+  },
+  {
+    prop: "typeId",
+    label: "资讯分类",
+    align: "center",
+    form: {
+      type: "select",
+      placeholder: "请选择资讯分类",
+      options: [{ label: "中区", value: "2" }],
+      rules: [{ required: true, message: "资讯分类不能为空" }]
     }
   },
   {
@@ -47,8 +71,7 @@ const columns = [
       type: "image"
     },
     form: {
-      type: "upload",
-      rules: [{ required: true, message: "图片不能为空" }]
+      type: "upload"
     }
   },
   {
@@ -71,19 +94,21 @@ const columns = [
       type: "select",
       dict: commonDict.state
     }
+  },
+  {
+    prop: "operation",
+    label: "操作",
+    align: "center",
+    buttons: [
+      {
+        type: "text",
+        label: "查看"
+      },
+      {
+        type: "text",
+        label: "编辑"
+      }
+    ]
   }
 ];
-
-export default {
-  components: {
-    DataTable
-  },
-  data() {
-    return {
-      resource: "article", //必写信息,用于请求后台对应资源链接
-      columns: columns
-    };
-  },
-  methods: {}
-};
 </script>

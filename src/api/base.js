@@ -5,7 +5,8 @@ const baseApi = {
     Save: "/save",
     Update: "/update",
     Get: "/get",
-    Delete: "/delete"
+    Delete: "/delete",
+    Upload: "/uploading/img"
 }
 
 export function pageList(resource, parameter) {
@@ -13,5 +14,24 @@ export function pageList(resource, parameter) {
         url: "/" + resource + baseApi.PageList,
         method: "get",
         params: parameter
+    })
+}
+
+export function saveData(resource, parameter) {
+    return request({
+        url: "/" + resource + baseApi.Save,
+        method: "post",
+        data: parameter
+    })
+}
+
+export function upload(parameter) {
+    return request({
+        url: baseApi.Upload,
+        method: "post",
+        data: parameter,
+        headers: {
+            "Content-type": "multipart/form-data"
+        }
     })
 }

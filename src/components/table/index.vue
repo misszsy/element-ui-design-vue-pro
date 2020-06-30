@@ -36,6 +36,7 @@
             :align="c.align"
             :key="index"
             :show-overflow-tooltip="tooltip"
+            v-if="c.prop !='operation'"
           >
             <template slot-scope="scope">
               <template v-if="c.render">
@@ -49,30 +50,24 @@
               <span v-else>{{scope.row[c.prop]}}</span>
             </template>
           </el-table-column>
+          <el-table-column v-else :label="c.label" :align="c.align" :key="index">
+            <template v-for="(o,index) in c.buttons">
+              <el-button :type="o.type" :size="o.size?o.size:'small'" :key="index">{{o.label}}</el-button>
+            </template>
+          </el-table-column>
         </template>
-        <el-table-column label="操作" align="center">
-          <template>
-            <el-button type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-          </template>
-        </el-table-column>
       </el-table>
-      <div class="pagination-container" style="padding-top: 20px;text-align:right;">
-        <el-pagination
-          background
-          :page-sizes="[20, 50, 100]"
-          layout="total, prev, pager, next,sizes"
-          :total="total"
-          :current-page="listQuery.pageNum"
-          :page-size="listQuery.pageSize"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        ></el-pagination>
-      </div>
+      <Pagination
+        :listQuery="listQuery"
+        :total="total"
+        @currentChange="handleCurrentChange"
+        @sizeChange="handleSizeChange"
+      />
       <DialogForm
         :formList="formList"
         :dialogStatus="dialogStatus"
         :dialogFormVisible="dialogFormVisible"
+        @createData="createData"
         @close="handlerVisible"
       />
     </el-card>
@@ -83,11 +78,13 @@
 import { pageList } from "@/api/base";
 import SearchForm from "@/components/form/SearchForm";
 import DialogForm from "@/components/form/DialogForm";
+import Pagination from "@/components/pagination";
 
 export default {
   components: {
     SearchForm,
-    DialogForm
+    DialogForm,
+    Pagination
   },
   props: {
     columns: {
@@ -134,6 +131,10 @@ export default {
         _this.total = data.data.total;
         _this.listLoading = false;
       });
+    },
+    createData() {
+      this.handlerVisible();
+      this.getDataList();
     },
     handleCurrentChange(val) {
       this.listQuery.pageNum = val;
