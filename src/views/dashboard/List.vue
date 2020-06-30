@@ -1,184 +1,89 @@
 <template>
-  <div>
-    <el-card style="margin-bottom:20px">
-      <el-form :inline="true" :model="queryParam" size="small" class="demo-form-inline">
-        <el-row :gutter="20">
-          <el-col :xs="24" :sm="6">
-            <el-form-item label="规则编号">
-              <el-input v-model="queryParam.no" placeholder="请输入规则编号"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="6">
-            <el-form-item label="用户名称">
-              <el-input v-model="queryParam.name" placeholder="请输入用户名称"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :xs="24" :sm="6">
-            <el-form-item label="禁用状态">
-              <el-select v-model="queryParam.disabled" placeholder="请选择禁用状态">
-                <el-option label="禁用" value="shanghai"></el-option>
-                <el-option label="正常" value="beijing"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <template v-if="advanced">
-            <el-col :xs="24" :sm="6">
-              <el-form-item label="调用次数">
-                <el-input v-model="queryParam.callNo" placeholder="请输入调用次数"></el-input>
-              </el-form-item>
-            </el-col>
-            <el-col :xs="24" :sm="6">
-              <el-form-item label="使用状态">
-                <el-select v-model="queryParam.status" placeholder="请选择使用状态">
-                  <el-option label="全部" value="0"></el-option>
-                  <el-option label="关闭" value="1"></el-option>
-                  <el-option label="运行中" value="2"></el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </template>
-          <el-col :xs="24" :sm="6" class="el-col-button">
-            <el-form-item>
-              <el-button type="primary" icon="el-icon-search" @click="onSubmit">查询</el-button>
-              <el-button icon="el-icon-refresh" @click="() => queryParam = {}">重置</el-button>
-              <el-link
-                type="primary"
-                :underline="false"
-                @click="toggleAdvanced"
-                style="margin-left: 8px"
-              >
-                {{ advanced ? '收起' : '展开' }}
-                <i
-                  :class="advanced ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"
-                />
-              </el-link>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
-
-    <el-card shadow="always">
-      <div class="table-list-operator">
-        <el-button size="small" type="primary" icon="el-icon-plus">新增</el-button>
-        <el-tooltip class="item" effect="dark" content="批量删除" placement="top">
-          <el-button size="small" icon="el-icon-delete-solid" circle></el-button>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="导出" placement="top">
-          <el-button size="small" icon="el-icon-download" circle></el-button>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-          <el-button size="small" icon="el-icon-refresh-right" circle></el-button>
-        </el-tooltip>
-      </div>
-      <el-table
-        :data="dataList"
-        v-loading="listLoading"
-        element-loading-text="给我一点时间"
-        border
-        stripe
-      >
-        <el-table-column label="序号" align="center" type="index"></el-table-column>
-        <el-table-column prop="title" label="标题" align="center"></el-table-column>
-        <el-table-column prop="author" label="作者" align="center"></el-table-column>
-        <el-table-column prop="tags" label="标签" align="center"></el-table-column>
-        <el-table-column prop="digest" label="摘要" align="center">
-          <template>
-            <el-button type="text" size="small">查看</el-button>
-            <el-button type="text" size="small">编辑</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <div class="pagination-container" style="padding-top: 20px;text-align:right;">
-        <el-pagination
-          background
-          :page-sizes="[20, 50, 100]"
-          layout="total, prev, pager, next,sizes"
-          :total="total"
-          :current-page="listQuery.pageNum"
-          :page-size="listQuery.pageSize"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-        ></el-pagination>
-      </div>
-    </el-card>
-  </div>
+  <!-- 表格渲染 -->
+  <DataTable :resource="resource" :columns="columns" />
 </template>
 
 <script>
-import { pageList } from "@/api/article";
+import DataTable from "@/components/table";
+import { commonDict } from "@/utils/dict/index";
 
-export default {
-  name: "tableList",
-  data() {
-    return {
-      // 高级搜索 展开/关闭
-      advanced: false,
-      queryParam: {},
-      dataList: null,
-      total: null,
-      listLoading: true,
-      listQuery: {
-        pageNum: 1,
-        pageSize: 20
-      }
-    };
+//属性列表
+const columns = [
+  {
+    prop: "title",
+    label: "标题",
+    align: "center",
+    search: true, //是否作為搜索條件并且要有form属性
+    form: {
+      type: "input", //默认为input,可不写
+      placeholder: "请输入标题信息",
+      rules: [{ required: true, message: "标题不能为空" }]
+    }
   },
-  created() {
-    this.getDataList();
+  {
+    prop: "author",
+    label: "作者",
+    align: "center",
+    form: {
+      placeholder: "请输入作者名字",
+      rules: [{ required: true, message: "作者名字不能为空" }]
+    }
   },
-  methods: {
-    getDataList() {
-      let _this = this;
-      pageList(_this.listQuery).then(data => {
-        _this.dataList = data.data.records;
-        _this.total = data.data.total;
-        _this.listLoading = false;
-      });
+  {
+    prop: "tags",
+    label: "标签",
+    align: "center",
+    search: true,
+    form: {
+      placeholder: "请输入标签内容",
+      rules: [{ required: true, message: "标签不能为空" }]
+    }
+  },
+  {
+    prop: "imageUrl",
+    label: "图片",
+    align: "center",
+    render: {
+      type: "image"
     },
-    handleCurrentChange(val) {
-      this.listQuery.pageNum = val;
-      this.getDataList();
-    },
-    handleSizeChange(val) {
-      this.listQuery.pageSize = val;
-      this.getDataList();
-    },
-    onSubmit() {},
-    toggleAdvanced() {
-      this.advanced = !this.advanced;
+    form: {
+      type: "upload",
+      rules: [{ required: true, message: "图片不能为空" }]
+    }
+  },
+  {
+    prop: "digest",
+    label: "摘要",
+    align: "center",
+    search: true,
+    form: {
+      type: "textarea",
+      placeholder: "请输入摘要内容",
+      rules: [{ required: true, message: "摘要不能为空" }]
+    }
+  },
+  {
+    prop: "state",
+    label: "状态",
+    align: "center",
+    render: {
+      //用于格式化单元格信息内容,图片则选type为image,内容则选select
+      type: "select",
+      dict: commonDict.state
     }
   }
+];
+
+export default {
+  components: {
+    DataTable
+  },
+  data() {
+    return {
+      resource: "article", //必写信息,用于请求后台对应资源链接
+      columns: columns
+    };
+  },
+  methods: {}
 };
 </script>
-
-<style lang="scss" scoped>
-.el-row::after,
-.el-row::before {
-  display: inline-block;
-}
-@media only screen and (min-width: 768px) {
-  .el-col-button {
-    float: right;
-    text-align: right;
-  }
-  .el-input,
-  .el-select {
-    width: 280px;
-  }
-}
-@media only screen and (max-width: 768px) {
-  .el-col-button {
-    text-align: center;
-  }
-  .el-input,
-  .el-select {
-    width: 45vh;
-  }
-}
-.table-list-operator {
-  text-align: center;
-  margin-bottom: 20px;
-}
-</style>
