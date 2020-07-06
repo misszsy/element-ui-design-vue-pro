@@ -9,18 +9,7 @@
       />
     </el-card>
     <el-card shadow="always">
-      <div class="table-list-operator">
-        <el-button size="small" type="primary" icon="el-icon-plus" @click="handleCreate">新增</el-button>
-        <el-tooltip class="item" effect="dark" content="批量删除" placement="top">
-          <el-button size="small" icon="el-icon-delete-solid" circle></el-button>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="导出" placement="top">
-          <el-button size="small" icon="el-icon-download" circle></el-button>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="刷新" placement="top">
-          <el-button size="small" icon="el-icon-refresh-right" circle></el-button>
-        </el-tooltip>
-      </div>
+      <TooltipButton :buttons="operationList" />
 
       <el-table
         :data="dataList"
@@ -28,8 +17,12 @@
         element-loading-text="加载数据中..."
         border
         stripe
+        empty-text
+        highlight-current-row
+        @selection-change="handleSelectionChange"
       >
-        <el-table-column label="序号" align="center" type="index"></el-table-column>
+        <el-table-column type="selection" width="55" align="center"></el-table-column>
+        <el-table-column label="序号" align="center" type="index" width="55"></el-table-column>
         <template v-for="(c,index) in columns">
           <el-table-column
             :label="c.label"
@@ -51,8 +44,15 @@
             </template>
           </el-table-column>
           <el-table-column v-else :label="c.label" :align="c.align" :key="index">
-            <template v-for="(o,index) in c.buttons">
-              <el-button :type="o.type" :size="o.size?o.size:'small'" :key="index">{{o.label}}</el-button>
+            <template slot-scope="scope">
+              <el-button
+                v-for="(o,index) in c.buttons"
+                :type="o.type?o.type:'text'"
+                :size="o.size?o.size:'small'"
+                :key="index"
+                v-bind="o"
+                @click="handleClick(o,scope.row)"
+              >{{o.label}}</el-button>
             </template>
           </el-table-column>
         </template>
@@ -64,8 +64,10 @@
         @sizeChange="handleSizeChange"
       />
       <DialogForm
+        ref="form"
         :formList="formList"
-        :dialogStatus="dialogStatus"
+        :dialogLabel="dialogLabel"
+        :entity="entity"
         :dialogFormVisible="dialogFormVisible"
         @createData="createData"
         @close="handlerVisible"
@@ -79,12 +81,14 @@ import { pageList } from "@/api/base";
 import SearchForm from "@/components/form/SearchForm";
 import DialogForm from "@/components/form/DialogForm";
 import Pagination from "@/components/pagination";
+import TooltipButton from "@/components/button/TooltipButton";
 
 export default {
   components: {
     SearchForm,
     DialogForm,
-    Pagination
+    Pagination,
+    TooltipButton
   },
   props: {
     columns: {
@@ -92,16 +96,20 @@ export default {
     },
     resource: {
       type: String
+    },
+    buttons: {
+      type: Array
     }
   },
   data() {
     return {
       dataList: [],
+      multiple: [],
       entity: {},
       listLoading: true,
       tooltip: true,
       total: null,
-      dialogStatus: "create",
+      dialogLabel: "",
       dialogFormVisible: false,
       listQuery: {
         pageNum: 1,
@@ -115,8 +123,15 @@ export default {
     },
     formList() {
       return this.columns.filter(item => item.form);
+    },
+    operationList() {
+      return this.buttons.reduce((res, toolbar) => {
+        res.push({ ...toolbar, table: this });
+        return res;
+      }, []);
     }
   },
+  watch: {},
   created() {
     this.getDataList();
   },
@@ -151,13 +166,19 @@ export default {
     handlerReset() {
       this.listQuery = {};
     },
-    handleCreate() {
-      //点击新增
-      this.dialogStatus = "create";
-      this.dialogFormVisible = true;
-    },
     handlerVisible() {
       this.dialogFormVisible = false;
+    },
+    handleSelectionChange(row) {
+      this.multiple = row;
+    },
+    handleClick(e, row) {
+      if (e.func) {
+        e.func({
+          table: this,
+          row: row
+        });
+      }
     }
   }
 };

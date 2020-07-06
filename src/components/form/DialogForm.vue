@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="textMap[dialogStatus]"
+    :title="dialogLabel"
     :visible.sync="dialogFormVisible"
     :close-on-click-modal="false"
     :before-close="handlerVisible"
@@ -77,18 +77,17 @@ export default {
     dialogFormVisible: {
       type: Boolean
     },
-    dialogStatus: {
-      type: String
-    }
+    dialogLabel: {
+      type: String,
+      default() {
+        return "新增";
+      }
+    },
+    entity: {}
   },
   data() {
     return {
-      fileList: [],
-      entity: {},
-      textMap: {
-        update: "编辑",
-        create: "新增"
-      }
+      fileList: []
     };
   },
   methods: {
@@ -115,7 +114,6 @@ export default {
     },
     uploadFile(val) {
       this.entity.imageUrl = val;
-      console.log(this.entity.imageUrl);
     }
   }
 };

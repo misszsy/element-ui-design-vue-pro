@@ -43,10 +43,10 @@ request.interceptors.request.use(config => {
     const token = storage.get(ACCESS_TOKEN);
     //如果Token存在,让每个请求在头部都携带token
     if (token) {
-        config.headers['token'] = token ;
+        config.headers['token'] = token;
     }
     return config;
-}, error => Promise.reject(error))
+}, errorHandler)
 
 //响应结果拦截
 request.interceptors.response.use((response) => {

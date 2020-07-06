@@ -25,6 +25,13 @@ export function saveData(resource, parameter) {
     })
 }
 
+export function deleteById(resource, parameter) {
+    return request({
+        url: "/" + resource + baseApi.Delete + "/" + parameter,
+        method: "post"
+    })
+}
+
 export function upload(parameter) {
     return request({
         url: baseApi.Upload,
