@@ -10,7 +10,7 @@ export const Create = {
     _this.dialogLabel = "新增";
     _this.entity = {};
     _this.dialogFormVisible = true;
-    _this.$refs[''].resetFields;
+    _this.$refs.form.handlerResetForm();
   }
 }
 
@@ -90,7 +90,9 @@ export const Update = {
   name: 'edit',
   label: '编辑',
   icon: 'edit',
-  func: () => {
-    console.log("我是编辑")
+  func: ({ table, row }) => {
+    table.dialogLabel = "编辑";
+    table.entity = Object.assign({}, row) // copy obj
+    table.dialogFormVisible = true;
   }
 }

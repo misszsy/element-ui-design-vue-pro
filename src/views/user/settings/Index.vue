@@ -1,7 +1,7 @@
 <template>
   <div class="page-header-index-wide">
     <el-card :body-style="{ padding: '16px 0', height: '100%' }" :style="{ height: '100%' }">
-      <div class="account-settings-info-main" :class="{ 'mobile': false }">
+      <div class="account-settings-info-main" :class="{ 'mobile': isMobile }">
         <div class="account-settings-info-left">
           <el-menu
             style="border: 0px;"
@@ -31,6 +31,7 @@
 
 <script>
 import RouteView from "@/layouts/RouteView";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -40,15 +41,22 @@ export default {
     return {
       openKeys: ["/user/settings/base"],
       selectedKeys: "",
-      mode: "vertical"
+      mode: ""
     };
   },
   mounted() {
     this.updateMenu();
+    this.mode = this.isMobile ? "horizontal" : "vertical";
+  },
+  computed: {
+    ...mapState("setting", ["isMobile"])
   },
   watch: {
     $route() {
       this.updateMenu();
+    },
+    isMobile(val) {
+      this.mode = val ? "horizontal" : "vertical";
     }
   },
   methods: {
@@ -85,6 +93,7 @@ export default {
           color: #409eff;
           background: none;
           font-weight: 700;
+          border-right: none;
         }
       }
     }
@@ -105,7 +114,7 @@ export default {
         color: #409eff;
         background: #ecf5ff;
         font-weight: 700;
-        border-right: 3px solid red;
+        border-right: 3px solid #409eff;
       }
     }
   }

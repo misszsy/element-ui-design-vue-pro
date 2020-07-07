@@ -6,7 +6,13 @@
     :before-close="handlerVisible"
     center
   >
-    <el-form ref="dataForm" :model="entity" label-position="right" label-width="80px">
+    <el-form
+      ref="form"
+      :model="entity"
+      label-position="right"
+      :disabled="disabled"
+      label-width="80px"
+    >
       <template v-for="(c,index) in formList">
         <el-form-item
           :label="c.label"
@@ -83,6 +89,12 @@ export default {
         return "新增";
       }
     },
+    disabled: {
+      type: Boolean,
+      default() {
+        return false;
+      }
+    },
     entity: {}
   },
   data() {
@@ -93,7 +105,7 @@ export default {
   methods: {
     createData() {
       const _this = this;
-      _this.$refs["dataForm"].validate(valid => {
+      _this.$refs["form"].validate(valid => {
         if (valid) {
           this.entity.content = "123";
           saveData("article", this.entity).then(res => {
@@ -111,6 +123,12 @@ export default {
     },
     handlerVisible() {
       this.$emit("close", this.dialogFormVisible);
+    },
+    handlerResetForm() {
+      const _this = this;
+      _this.$nextTick(function() {
+        _this.$refs.form.clearValidate();
+      });
     },
     uploadFile(val) {
       this.entity.imageUrl = val;

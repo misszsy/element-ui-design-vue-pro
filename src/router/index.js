@@ -26,21 +26,30 @@ const routes = [
     children: [
       {
         path: "/",
-        redirect: "/dashboard/tableList"
+        redirect: "/table/list"
       },
       {
-        path: "/dashboard",
-        name: "Dashboard",
+        path: "/table",
+        name: "表格管理",
         icon: "el-icon-s-home",
         component: RouteView,
         children: [
           {
-            path: "/dashboard/tableList",
-            name: "查询列表",
+            path: "/table/list",
+            name: "基本表格",
             meta: { keepAlive: true },
             component: () =>
               import(
-                /* webpackChunkName: "dashboard" */ "../views/dashboard/List"
+                /* webpackChunkName: "dashboard" */ "../views/table/List"
+              )
+          },
+          {
+            path: "/table/treeTable",
+            name: "树形表格",
+            meta: { keepAlive: true },
+            component: () =>
+              import(
+                /* webpackChunkName: "dashboard" */ "../views/table/TreeTable"
               )
           }
         ]

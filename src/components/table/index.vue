@@ -65,6 +65,8 @@
       />
       <DialogForm
         ref="form"
+        v-if="showDialog"
+        :disabled="disabled"
         :formList="formList"
         :dialogLabel="dialogLabel"
         :entity="entity"
@@ -99,6 +101,12 @@ export default {
     },
     buttons: {
       type: Array
+    },
+    showDialog: {
+      type: Boolean,
+      default() {
+        return true;
+      }
     }
   },
   data() {
@@ -106,6 +114,7 @@ export default {
       dataList: [],
       multiple: [],
       entity: {},
+      disabled: false,
       listLoading: true,
       tooltip: true,
       total: null,

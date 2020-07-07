@@ -1,21 +1,21 @@
 <template>
   <el-row :gutter="16">
     <el-col :md="24" :lg="6">
-      <el-form ref="form" label-position="top" :model="form" label-width="80px">
+      <el-form ref="form" label-position="top" :model="entity" label-width="80px">
         <el-form-item label="昵称">
-          <el-input v-model="form.name" placeholder="昵称"></el-input>
+          <el-input v-model="entity.name" placeholder="昵称"></el-input>
         </el-form-item>
         <el-form-item label="邮箱">
-          <el-input v-model="form.email" placeholder="邮箱"></el-input>
+          <el-input v-model="entity.email" placeholder="邮箱"></el-input>
         </el-form-item>
         <el-form-item label="联系电话">
-          <el-input v-model="form.phone" placeholder="联系电话"></el-input>
+          <el-input v-model="entity.phone" placeholder="联系电话"></el-input>
         </el-form-item>
         <el-form-item label="登录密码">
-          <el-input v-model="form.pasword" placeholder="登录密码"></el-input>
+          <el-input v-model="entity.pasword" placeholder="登录密码"></el-input>
         </el-form-item>
         <el-form-item label="个人简介">
-          <el-input type="textarea" v-model="form.desc" placeholder="个人简介"></el-input>
+          <el-input type="textarea" v-model="entity.desc" placeholder="个人简介"></el-input>
         </el-form-item>
         <el-form-item align="center">
           <el-button size="small" type="primary" @click="onSubmit">更新基本信息</el-button>
@@ -23,7 +23,7 @@
       </el-form>
     </el-col>
     <el-col :sm="24" :md="6" :style="{ textAlign: 'center' }">
-      <el-avatar :size="150" :src="imageUrl"></el-avatar>
+      <el-avatar :size="150" :src="entity.avatar"></el-avatar>
       <el-upload
         class="avatar-uploader"
         action="https://jsonplaceholder.typicode.com/posts/"
@@ -41,19 +41,12 @@
 export default {
   data() {
     return {
-      imageUrl:
-        "https://lfshz.oss-cn-shenzhen.aliyuncs.com/lfs/202001141001c7b09f.png",
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: ""
-      }
-    };
+    }
+  },
+  computed: {
+    entity() {
+      return this.$store.state.user.info;
+    }
   },
   methods: {
     onSubmit() {},
