@@ -1,66 +1,13 @@
 <template>
   <el-dialog
-    :title="dialogLabel"
-    :visible.sync="dialogFormVisible"
+    :title="$attrs.dialogLabel"
+    :visible.sync="$attrs.dialogFormVisible"
     :close-on-click-modal="false"
     :before-close="handlerVisible"
     center
   >
-    <el-form
-      ref="form"
-      :model="entity"
-      label-position="right"
-      :disabled="disabled"
-      label-width="80px"
-    >
-      <template v-for="(c,index) in formList">
-        <el-form-item
-          :label="c.label"
-          :prop="c.prop"
-          :key="index"
-          :rules="c.form.rules ? c.form.rules :[]"
-        >
-          <el-select
-            v-if="c.form.type=='select'"
-            v-model="entity[c.prop]"
-            :placeholder="c.form.placeholder"
-          >
-            <el-option
-              v-for="(o,index) in c.form.options"
-              :key="index"
-              :label="o.label"
-              :value="o.value"
-            ></el-option>
-          </el-select>
-          <Upload
-            v-else-if="c.form.type=='upload'"
-            :limit="1"
-            :imageUrl="entity.imageUrl"
-            @upload="uploadFile"
-          />
-          <el-date-picker
-            v-else-if="c.form.type=='date' || c.form.type=='datetime'"
-            v-model="entity[c.prop]"
-            :placeholder="c.form.placeholder"
-            :type="c.form.type"
-          ></el-date-picker>
-          <el-input
-            v-else-if="c.form.type=='textarea'"
-            :type="c.form.type"
-            :autosize="{ minRows: 4, maxRows: 6}"
-            v-model="entity[c.prop]"
-            :placeholder="c.form.placeholder"
-          ></el-input>
-          <el-input
-            v-else
-            :size="c.form.size ? c.form.size : 'small' "
-            v-model="entity[c.prop]"
-            maxlength="50"
-            :placeholder="c.form.placeholder"
-          ></el-input>
-        </el-form-item>
-      </template>
-    </el-form>
+    <BaseForm ref="form" v-bind="$attrs" v-on="$listeners" />
+
     <span class="dialog-footer" slot="footer" style="padding-top: 10px;">
       <el-button type="primary" @click="createData">确认</el-button>
       <el-button @click="handlerVisible">取消</el-button>
@@ -69,69 +16,25 @@
 </template>
 
 <script>
-import { saveData } from "@/api/base";
-import Upload from "@/components/upload";
+import BaseForm from "./BaseForm";
 
 export default {
+  inheritAttrs: false,
   components: {
-    Upload
-  },
-  props: {
-    formList: {
-      type: Array
-    },
-    dialogFormVisible: {
-      type: Boolean
-    },
-    dialogLabel: {
-      type: String,
-      default() {
-        return "新增";
-      }
-    },
-    disabled: {
-      type: Boolean,
-      default() {
-        return false;
-      }
-    },
-    entity: {}
-  },
-  data() {
-    return {
-      fileList: []
-    };
+    BaseForm
   },
   methods: {
     createData() {
-      const _this = this;
-      _this.$refs["form"].validate(valid => {
-        if (valid) {
-          this.entity.content = "123";
-          saveData("article", this.entity).then(res => {
-            if (res.code == 0) {
-              _this.$message({
-                message: "添加成功",
-                type: "success",
-                center: true
-              });
-              _this.$emit("createData");
-            }
-          });
-        }
-      });
+      this.$refs.form.createData();
     },
     handlerVisible() {
       this.$emit("close", this.dialogFormVisible);
     },
-    handlerResetForm() {
+    clearValidateForm() {
       const _this = this;
       _this.$nextTick(function() {
-        _this.$refs.form.clearValidate();
+        _this.$refs.form.clearValidateForm();
       });
-    },
-    uploadFile(val) {
-      this.entity.imageUrl = val;
     }
   }
 };

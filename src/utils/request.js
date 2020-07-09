@@ -1,5 +1,6 @@
 import axios from "axios";
 import store from '@/store'
+import router from '@/router'
 import storage from "store";
 import { Message } from 'element-ui'
 import { ACCESS_TOKEN } from "@/store/mutation-types";
@@ -57,9 +58,16 @@ request.interceptors.response.use((response) => {
             return Promise.resolve(data)
         } else {
             if (response.data.code === 403 || response.data.code === 401) {
+                Message.closeAll();
                 Message({
                     type: 'error',
                     message: response.data.msg
+                })
+                router.replace({
+                    path: '/login',
+                    query: {
+                        redirect: router.currentRoute.fullPath
+                    }
                 })
                 return false;
             }

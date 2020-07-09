@@ -1,19 +1,19 @@
 <template>
   <!-- 表格渲染 -->
-  <DataTable :resource="resource" :buttons="buttons" :columns="columns" />
+  <DataTable :resource="resource" :buttons="toolbars" :columns="columns" />
 </template>
 
 <script>
 import DataTable from "@/components/table";
 import { commonDict } from "@/utils/dict/index";
+import { Delete, Update } from "@/utils/buttons/operation";
 import {
-  Create,
-  Delete,
+  CreateDialog,
+  DeleteAll,
   Refresh,
   Active,
-  Cancel,
-  Update
-} from "@/utils/operation";
+  Cancel
+} from "@/utils/buttons/toolbars";
 
 export default {
   components: {
@@ -23,14 +23,14 @@ export default {
     return {
       resource: "article", //必写信息,用于请求后台对应资源链接
       columns: columns,
-      buttons: buttons
+      toolbars: toolbars
     };
   },
   methods: {}
 };
 
-//table头部操作按钮
-const buttons = [Create, Delete, Refresh, Active, Cancel];
+//table头部工具栏操作按钮
+const toolbars = [CreateDialog, DeleteAll, Refresh, Active, Cancel];
 
 //属性列表
 const columns = [
@@ -38,7 +38,7 @@ const columns = [
     prop: "title",
     label: "标题",
     align: "center",
-    roles: ["table", "search", "form"], //作用：table: 在table中显示，search：作为搜索条件，form：在form表单中显示
+    search: true, //作为搜索查询条件
     form: {
       type: "input", //默认为input,可不写
       placeholder: "请输入标题信息",
@@ -105,13 +105,19 @@ const columns = [
       //用于格式化单元格信息内容,图片则选type为image,内容则选select对应字典属性dict
       type: "select",
       dict: commonDict.state
+    },
+    search: true,
+    form: {
+      type: "select",
+      placeholder: "请选择状态",
+      options: [{ label: "发布", value: "1" }]
     }
   },
   {
     prop: "operation",
     label: "操作",
     align: "center",
-    buttons: [Update]
+    buttons: [Update, Delete] //操作按钮可自定义传入
   }
 ];
 </script>

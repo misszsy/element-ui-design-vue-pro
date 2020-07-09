@@ -9,7 +9,7 @@
       />
     </el-card>
     <el-card shadow="always">
-      <TooltipButton :buttons="operationList" />
+      <TooltipButton :buttons="toolbarList" />
 
       <el-table
         :data="dataList"
@@ -66,10 +66,10 @@
       <DialogForm
         ref="form"
         v-if="showDialog"
-        :disabled="disabled"
         :formList="formList"
-        :dialogLabel="dialogLabel"
         :entity="entity"
+        :resource="resource"
+        :dialogLabel="dialogLabel"
         :dialogFormVisible="dialogFormVisible"
         @createData="createData"
         @close="handlerVisible"
@@ -131,16 +131,15 @@ export default {
       return this.columns.filter(item => item.search && item.form);
     },
     formList() {
-      return this.columns.filter(item => item.form);
+      return this.columns.filter(item => item.form && !item.form.show);
     },
-    operationList() {
+    toolbarList() {
       return this.buttons.reduce((res, toolbar) => {
         res.push({ ...toolbar, table: this });
         return res;
       }, []);
     }
   },
-  watch: {},
   created() {
     this.getDataList();
   },

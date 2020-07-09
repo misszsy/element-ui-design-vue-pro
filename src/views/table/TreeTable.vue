@@ -4,7 +4,7 @@
 
 <script>
 import TreeTable from "@/components/table/TreeTable";
-import { Update } from "@/utils/operation";
+import { Update } from "@/utils/buttons/operation";
 
 const columns = [
   {

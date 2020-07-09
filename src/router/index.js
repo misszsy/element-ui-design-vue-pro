@@ -55,6 +55,19 @@ const routes = [
         ]
       },
       {
+        path: "/form",
+        name: "表单管理",
+        icon: "el-icon-edit",
+        component: RouteView,
+        children: [{
+          path: "/form/step-form",
+          name: "分步表单",
+          meta: { keepAlive: true },
+          component: () =>
+            import(/* webpackChunkName: "form" */ "../views/form")
+        }]
+      },
+      {
         path: "/user",
         name: "个人中心",
         icon: "el-icon-user",
@@ -115,7 +128,7 @@ NProgress.configure({ showSpinner: false });
 //白名单地址
 const whiteList = ['login']
 const loginRoutePath = "/login";
-const defaultRoutePath = "/dashboard/tableList";
+const defaultRoutePath = "/table/list";
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
