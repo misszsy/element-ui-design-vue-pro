@@ -8,7 +8,6 @@ import Login from "@/views/login/Login";
 import NotFound from "@/components/exception/404";
 import Forbidden from "@/components/exception/403";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
-import { Notification } from "element-ui"
 import RouteView from "@/layouts/RouteView";
 
 Vue.use(VueRouter);
@@ -151,15 +150,8 @@ router.beforeEach((to, from, next) => {
               next({ path: redirect })
             }
           }).catch(() => {
-            Notification({
-              title: "错误",
-              message: `获取用户信息失败，请重试`,
-              type: "error"
-            });
             // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
-            store.dispatch('Logout').then(() => {
-              next({ path: loginRoutePath, query: { redirect: to.fullPath } })
-            })
+            next({ path: loginRoutePath, query: { redirect: to.fullPath } })
           })
       } else {
         next();

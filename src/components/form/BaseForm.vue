@@ -1,6 +1,6 @@
 <template>
-  <el-form ref="form" :model="$attrs.entity" label-position="right" label-width="80px">
-    <template v-for="(c,index) in $attrs.formList">
+  <el-form ref="form" :model="entity" label-position="right" label-width="80px">
+    <template v-for="(c,index) in formList">
       <el-form-item
         :label="c.label"
         :prop="c.prop"
@@ -9,7 +9,7 @@
       >
         <el-select
           v-if="c.form.type=='select'"
-          v-model="$attrs.entity[c.prop]"
+          v-model="entity[c.prop]"
           :placeholder="c.form.placeholder"
         >
           <el-option
@@ -22,12 +22,12 @@
         <Upload
           v-else-if="c.form.type=='upload'"
           :limit="1"
-          :imageUrl="$attrs.entity.imageUrl"
+          :imageUrl="entity.imageUrl"
           @upload="uploadFile"
         />
         <el-date-picker
           v-else-if="c.form.type=='date' || c.form.type=='datetime'"
-          v-model="$attrs.entity[c.prop]"
+          v-model="entity[c.prop]"
           :placeholder="c.form.placeholder"
           :type="c.form.type"
         ></el-date-picker>
@@ -35,13 +35,13 @@
           v-else-if="c.form.type=='textarea'"
           :type="c.form.type"
           :autosize="{ minRows: 4, maxRows: 6}"
-          v-model="$attrs.entity[c.prop]"
+          v-model="entity[c.prop]"
           :placeholder="c.form.placeholder"
         ></el-input>
         <el-input
           v-else
           :size="c.form.size ? c.form.size : 'small' "
-          v-model="$attrs.entity[c.prop]"
+          v-model="entity[c.prop]"
           maxlength="50"
           :placeholder="c.form.placeholder"
         ></el-input>
@@ -63,6 +63,14 @@ export default {
     return {
       fileList: []
     };
+  },
+  computed: {
+    entity() {
+      return this.$attrs.entity;
+    },
+    formList() {
+      return this.$attrs.formList;
+    }
   },
   methods: {
     createData() {

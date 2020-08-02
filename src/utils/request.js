@@ -61,14 +61,20 @@ request.interceptors.response.use((response) => {
                 Message.closeAll();
                 Message({
                     type: 'error',
-                    message: response.data.msg
+                    message: '登录信息过期，请重新登录'
                 })
-                router.replace({
-                    path: '/login',
-                    query: {
-                        redirect: router.currentRoute.fullPath
-                    }
-                })
+
+                store.commit('SET_TOKEN', '');
+                storage.remove(ACCESS_TOKEN);
+
+                setTimeout(() => {
+                    router.replace({
+                        path: '/login',
+                        query: {
+                            redirect: router.currentRoute.fullPath
+                        }
+                    })
+                }, 3000)
                 return false;
             }
             return Promise.reject(response)
