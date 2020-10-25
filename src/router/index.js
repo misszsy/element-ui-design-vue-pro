@@ -146,7 +146,7 @@ router.beforeEach((to, from, next) => {
               // set the replace: true so the navigation will not leave a history record
               next({ ...to, replace: true })
             } else {
-              // 跳转到目的路由
+              // 跳转到目的路由 
               next({ path: redirect })
             }
           }).catch(() => {
