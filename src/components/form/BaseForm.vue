@@ -5,7 +5,7 @@
         :label="c.label"
         :prop="c.prop"
         :key="index"
-        :rules="c.form.rules ? c.form.rules :[]"
+        :rules="c.form.rules ? c.form.rules : []"
       >
         <el-select
           v-if="c.form.type == 'select'"

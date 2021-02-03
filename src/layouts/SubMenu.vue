@@ -1,4 +1,4 @@
-<template >
+<template>
   <el-submenu :index="menuInfo.path">
     <template slot="title">
       <i :class="menuInfo.icon"></i>

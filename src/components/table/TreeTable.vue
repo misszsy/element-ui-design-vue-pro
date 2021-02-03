@@ -21,7 +21,7 @@
             :label="c.label"
             :align="c.align"
             :key="index"
-            v-if="c.prop !='operation'"
+            v-if="c.prop != 'operation'"
           >
             <template slot-scope="scope">
               <template v-if="c.render">
@@ -45,8 +45,8 @@
             <template slot-scope="scope">
               <el-button
                 v-for="(o, index) in c.buttons"
-                :type="o.type ? o.type:'text'"
-                :size="o.size ? o.size:'small'"
+                :type="o.type ? o.type : 'text'"
+                :size="o.size ? o.size : 'small'"
                 :key="index"
                 v-bind="o"
                 @click="handleClick(o, scope.row)"
