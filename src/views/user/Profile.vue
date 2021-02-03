@@ -1,6 +1,6 @@
 <template>
   <el-card style="margin-bottom:20px">
-    <el-tabs :tab-position="tabPosition" >
+    <el-tabs :tab-position="tabPosition">
       <el-tab-pane label="个人信息">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="活动名称">
@@ -23,7 +23,11 @@
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
-              <el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%;"></el-time-picker>
+              <el-time-picker
+                placeholder="选择时间"
+                v-model="form.date2"
+                style="width: 100%;"
+              ></el-time-picker>
             </el-col>
           </el-form-item>
           <el-form-item label="即时配送">
@@ -74,9 +78,7 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-   
-    }
+    onSubmit() {}
   }
 };
 </script>

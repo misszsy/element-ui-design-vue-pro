@@ -10,7 +10,12 @@
     >
       <h3 class="title">后台系统</h3>
       <el-form-item prop="username">
-        <el-input type="text" v-model="entity.username" auto-complete="off" placeholder="请输入用户名">
+        <el-input
+          type="text"
+          v-model="entity.username"
+          auto-complete="off"
+          placeholder="请输入用户名"
+        >
           <template slot="prepend">
             <i class="el-icon-user"></i>
           </template>
@@ -28,14 +33,17 @@
           </template>
         </el-input>
       </el-form-item>
-      <el-checkbox :checked="state.checked" class="remember">记住密码</el-checkbox>
+      <el-checkbox :checked="state.checked" class="remember"
+        >记住密码</el-checkbox
+      >
       <el-form-item style="width:100%;">
         <el-button
           type="primary"
           style="width:100%;"
           @click="handleSubmit"
           :loading="state.loading"
-        >登录</el-button>
+          >登录</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
@@ -116,7 +124,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .app-container {

@@ -26,10 +26,10 @@ export default {
   },
   methods: {
     handleCurrentChange(val) {
-      this.$emit("currentChange",val);
+      this.$emit("currentChange", val);
     },
     handleSizeChange(val) {
-      this.$emit("sizeChange",val);
+      this.$emit("sizeChange", val);
     }
   }
 };

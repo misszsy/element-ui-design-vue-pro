@@ -11,7 +11,7 @@
     </el-drawer>
     <SiderMenu :collapsed="isMobile ? true : collapsed"></SiderMenu>
     <el-container class="beauty-scroll">
-      <el-header :style="{padding:0}">
+      <el-header :style="{ padding: 0 }">
         <Header :collapsed="collapsed" @collapse="handleCollapsed"></Header>
       </el-header>
       <el-main>

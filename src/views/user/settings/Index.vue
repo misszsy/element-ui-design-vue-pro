@@ -1,7 +1,10 @@
 <template>
   <div class="page-header-index-wide">
-    <el-card :body-style="{ padding: '16px 0', height: '100%' }" :style="{ height: '100%' }">
-      <div class="account-settings-info-main" :class="{ 'mobile': isMobile }">
+    <el-card
+      :body-style="{ padding: '16px 0', height: '100%' }"
+      :style="{ height: '100%' }"
+    >
+      <div class="account-settings-info-main" :class="{ mobile: isMobile }">
         <div class="account-settings-info-left">
           <el-menu
             style="border: 0px;"
