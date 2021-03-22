@@ -1,46 +1,46 @@
 <template>
   <el-form ref="form" :model="entity" label-position="right" label-width="80px">
-    <template v-for="(c,index) in formList">
+    <template v-for="(c, index) in formList">
       <el-form-item
         :label="c.label"
         :prop="c.prop"
         :key="index"
-        :rules="c.form.rules ? c.form.rules :[]"
+        :rules="c.form.rules ? c.form.rules : []"
       >
         <el-select
-          v-if="c.form.type=='select'"
+          v-if="c.form.type == 'select'"
           v-model="entity[c.prop]"
           :placeholder="c.form.placeholder"
         >
           <el-option
-            v-for="(o,index) in c.form.options"
+            v-for="(o, index) in c.form.options"
             :key="index"
             :label="o.label"
             :value="o.value"
           ></el-option>
         </el-select>
         <Upload
-          v-else-if="c.form.type=='upload'"
+          v-else-if="c.form.type == 'upload'"
           :limit="1"
           :imageUrl="entity.imageUrl"
           @upload="uploadFile"
         />
         <el-date-picker
-          v-else-if="c.form.type=='date' || c.form.type=='datetime'"
+          v-else-if="c.form.type == 'date' || c.form.type == 'datetime'"
           v-model="entity[c.prop]"
           :placeholder="c.form.placeholder"
           :type="c.form.type"
         ></el-date-picker>
         <el-input
-          v-else-if="c.form.type=='textarea'"
+          v-else-if="c.form.type == 'textarea'"
           :type="c.form.type"
-          :autosize="{ minRows: 4, maxRows: 6}"
+          :autosize="{ minRows: 4, maxRows: 6 }"
           v-model="entity[c.prop]"
           :placeholder="c.form.placeholder"
         ></el-input>
         <el-input
           v-else
-          :size="c.form.size ? c.form.size : 'small' "
+          :size="c.form.size ? c.form.size : 'small'"
           v-model="entity[c.prop]"
           maxlength="50"
           :placeholder="c.form.placeholder"

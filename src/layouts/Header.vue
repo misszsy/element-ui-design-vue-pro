@@ -17,11 +17,15 @@
               icon="el-icon-user-solid"
               :src="userInfo.avatar"
             />
-            <span>{{userInfo.name}}</span>
+            <span>{{ userInfo.name }}</span>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="a" icon="el-icon-user">个人设置</el-dropdown-item>
-            <el-dropdown-item command="c" icon="el-icon-switch-button" divided>退出登录</el-dropdown-item>
+            <el-dropdown-item command="a" icon="el-icon-user">
+              个人设置
+            </el-dropdown-item>
+            <el-dropdown-item command="c" icon="el-icon-switch-button" divided
+              >退出登录</el-dropdown-item
+            >
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -174,7 +178,6 @@ export default {
 };
 </script>
 
-
 <style lang="scss" scoped>
 .gloabl-header {
   position: relative;
@@ -238,4 +241,3 @@ export default {
   }
 }
 </style>
-

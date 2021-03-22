@@ -23,14 +23,14 @@ export default {
       editableTabs: [
         {
           title: "首页",
-          name: "1",
+          name: "1"
         },
         {
           title: "Tab 2",
-          name: "2",
-        },
+          name: "2"
+        }
       ],
-      tabIndex: 2,
+      tabIndex: 2
     };
   },
   methods: {
@@ -40,7 +40,7 @@ export default {
         this.editableTabs.push({
           title: "New Tab",
           name: newTabName,
-          content: "New Tab content",
+          content: "New Tab content"
         });
         this.editableTabsValue = newTabName;
       }
@@ -59,10 +59,10 @@ export default {
         }
 
         this.editableTabsValue = activeName;
-        this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
+        this.editableTabs = tabs.filter(tab => tab.name !== targetName);
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

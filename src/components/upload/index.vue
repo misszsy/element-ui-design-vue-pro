@@ -27,11 +27,11 @@ export default {
       type: Number,
       default() {
         return 1;
-      },
+      }
     },
     imageUrl: {
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return { fileList: [] };
@@ -41,12 +41,12 @@ export default {
       const _this = this;
       let formData = new FormData();
       formData.set("files", file.file);
-      upload(formData).then((res) => {
+      upload(formData).then(res => {
         if (res.code == 0) {
           _this.$message({
             message: "上传成功",
             type: "success",
-            center: true,
+            center: true
           });
           _this.$emit("upload", res.data[0]);
         } else {
@@ -74,7 +74,7 @@ export default {
           files.length
         } 个文件，共选择了 ${files.length + fileList.length} 个文件`
       );
-    },
-  },
+    }
+  }
 };
 </script>

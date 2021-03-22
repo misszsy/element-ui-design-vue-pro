@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "browserslist": "^4.16.3",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
     "enquire.js": "^2.1.6",

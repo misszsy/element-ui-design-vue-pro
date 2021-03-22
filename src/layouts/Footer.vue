@@ -1,5 +1,5 @@
 <template>
-  <div> Element UI Pro ©2020 Created by zsy UED</div>
+  <div>Element UI Pro ©2020 Created by zsy UED</div>
 </template>
 
 <script>

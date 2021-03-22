@@ -15,7 +15,7 @@
         <Header :collapsed="collapsed" @collapse="handleCollapsed"></Header>
       </el-header>
       <el-main>
-         <Tabs />
+        <Tabs />
         <router-view></router-view>
       </el-main>
       <el-footer>
@@ -37,16 +37,16 @@ export default {
     Header,
     Tabs,
     Footer,
-    SiderMenu,
+    SiderMenu
   },
   data() {
     return {
       collapsed: false,
-      direction: "ltr",
+      direction: "ltr"
     };
   },
   computed: {
-    ...mapState("setting", ["isMobile"]),
+    ...mapState("setting", ["isMobile"])
   },
   methods: {
     onDrawerChange(show) {
@@ -54,8 +54,8 @@ export default {
     },
     handleCollapsed(collapsed) {
       this.collapsed = collapsed;
-    },
-  },
+    }
+  }
 };
 </script>
 

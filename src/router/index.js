@@ -1,5 +1,5 @@
 import Vue from "vue";
-import store from '@/store'
+import store from "@/store";
 import storage from "store";
 import VueRouter from "vue-router";
 import NProgress from "nprogress";
@@ -38,9 +38,7 @@ const routes = [
             name: "基本表格",
             meta: { keepAlive: true },
             component: () =>
-              import(
-                /* webpackChunkName: "dashboard" */ "../views/table/List"
-              )
+              import(/* webpackChunkName: "dashboard" */ "../views/table/List")
           },
           {
             path: "/table/treeTable",
@@ -58,13 +56,15 @@ const routes = [
         name: "表单管理",
         icon: "el-icon-edit",
         component: RouteView,
-        children: [{
-          path: "/form/step-form",
-          name: "分步表单",
-          meta: { keepAlive: true },
-          component: () =>
-            import(/* webpackChunkName: "form" */ "../views/form")
-        }]
+        children: [
+          {
+            path: "/form/step-form",
+            name: "分步表单",
+            meta: { keepAlive: true },
+            component: () =>
+              import(/* webpackChunkName: "form" */ "../views/form")
+          }
+        ]
       },
       {
         path: "/user",
@@ -81,27 +81,28 @@ const routes = [
               import(
                 /* webpackChunkName: "dashboard" */ "../views/user/settings/Index"
               ),
-            redirect: '/user/settings/base',
+            redirect: "/user/settings/base",
             hideChildrenInMenu: true,
             children: [
               {
                 path: "/user/settings/base",
                 name: "基本设置",
                 meta: { hidden: true, keepAlive: true },
-                component: () => import('../views/user/settings/BaseSetting'),
+                component: () => import("../views/user/settings/BaseSetting")
               },
               {
                 path: "/user/settings/security",
                 name: "安全设置",
                 meta: { hidden: true, keepAlive: true },
-                component: () => import('../views/user/settings/Security'),
-              },
+                component: () => import("../views/user/settings/Security")
+              }
             ]
           }
         ]
       }
     ]
-  }, {
+  },
+  {
     path: "/403",
     name: "403",
     hideInMenu: true,
@@ -125,7 +126,7 @@ const router = new VueRouter({
 NProgress.configure({ showSpinner: false });
 
 //白名单地址
-const whiteList = ['login']
+const whiteList = ["login"];
 const loginRoutePath = "/login";
 const defaultRoutePath = "/table/list";
 
@@ -133,36 +134,38 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   if (storage.get(ACCESS_TOKEN)) {
     if (to.path === loginRoutePath) {
-      next({ path: defaultRoutePath })
+      next({ path: defaultRoutePath });
       NProgress.done();
     } else {
       //判断是否有用户信息
       if (!store.getters.profile) {
         store
-          .dispatch('GetInfo').then(() => {
+          .dispatch("GetInfo")
+          .then(() => {
             // 请求带有 redirect 重定向时，登录自动重定向到该地址
-            const redirect = decodeURIComponent(from.query.redirect || to.path)
+            const redirect = decodeURIComponent(from.query.redirect || to.path);
             if (to.path === redirect) {
               // set the replace: true so the navigation will not leave a history record
-              next({ ...to, replace: true })
+              next({ ...to, replace: true });
             } else {
-              // 跳转到目的路由 
-              next({ path: redirect })
+              // 跳转到目的路由
+              next({ path: redirect });
             }
-          }).catch(() => {
-            // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
-            next({ path: loginRoutePath, query: { redirect: to.fullPath } })
           })
+          .catch(() => {
+            // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
+            next({ path: loginRoutePath, query: { redirect: to.fullPath } });
+          });
       } else {
         next();
       }
     }
   } else {
     if (whiteList.includes(to.name)) {
-      next()
+      next();
     } else {
-      next({ path: loginRoutePath, query: { redirect: to.fullPath } })
-      NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
+      next({ path: loginRoutePath, query: { redirect: to.fullPath } });
+      NProgress.done(); // if current page is login will not trigger afterEach hook, so manually handle it
     }
   }
   // if (to.path !== from.path) {
@@ -175,9 +178,9 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-const originalPush = VueRouter.prototype.push
+const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+  return originalPush.call(this, location).catch(err => err);
+};
 
 export default router;

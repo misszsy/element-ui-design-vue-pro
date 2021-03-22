@@ -72,7 +72,7 @@ export default {
   width: 336px;
   padding: 4px 0 0 0;
 
-&[x-placement^="bottom"] {
+  &[x-placement^="bottom"] {
     margin-top: -8px;
   }
 }

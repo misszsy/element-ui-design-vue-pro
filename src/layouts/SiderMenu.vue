@@ -1,5 +1,5 @@
 <template>
-  <el-aside :width="collapsed ?'64px':'260px'" class="sider">
+  <el-aside :width="collapsed ? '64px' : '260px'" class="sider">
     <el-menu
       class="el-menu-vertical"
       collapse-transition
@@ -14,11 +14,13 @@
         <el-submenu :index="menu.path" :key="menu.path">
           <template slot="title">
             <i :class="menu.icon"></i>
-            <span slot="title">{{menu.name}}</span>
+            <span slot="title">{{ menu.name }}</span>
           </template>
           <template v-for="item in menu.children">
             <el-menu-item :index="item.path" :key="item.path">
-              <span slot="title" style="padding-left: 20px;">{{item.name}}</span>
+              <span slot="title" style="padding-left: 20px;">{{
+                item.name
+              }}</span>
             </el-menu-item>
           </template>
         </el-submenu>
@@ -89,7 +91,7 @@ export default {
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 .el-menu-vertical:not(.el-menu--collapse) {
   width: 260px;
   min-height: 400px;

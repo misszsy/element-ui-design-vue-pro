@@ -15,7 +15,7 @@ export const CreateDialog = {
     _this.dialogFormVisible = true;
     _this.$refs.form.clearValidateForm();
   }
-}
+};
 
 //批量删除
 export const DeleteAll = {
@@ -28,56 +28,57 @@ export const DeleteAll = {
       table.$message({
         showClose: true,
         message: "请选择要删除的数据",
-        type: 'warning',
+        type: "warning"
       });
       return;
     }
-    const data = table.multiple.filter((item) => item.state != '1').map(item => item.id);
-    table.$confirm('确认提交吗？', '提示', {}).then(() => {
-      deleteById(table.resource, data).then((res) => {
+    const data = table.multiple
+      .filter(item => item.state != "1")
+      .map(item => item.id);
+    table.$confirm("确认提交吗？", "提示", {}).then(() => {
+      deleteById(table.resource, data).then(res => {
         if (res.code == 0) {
           table.$message({
             showClose: true,
-            message: '删除成功',
-            type: 'success'
-          })
+            message: "删除成功",
+            type: "success"
+          });
           table.getDataList();
         }
-      })
-    })
+      });
+    });
   }
-}
+};
 
 //刷新按钮
 export const Refresh = {
-  name: 'refresh',
-  label: '刷新',
-  icon: 'refresh-right',
+  name: "refresh",
+  label: "刷新",
+  icon: "refresh-right",
   tooltip: true,
   func: ({ table }) => {
     table.getDataList();
   }
-}
+};
 
 //发布
 export const Active = {
-  name: 'success',
-  label: '发布',
-  icon: 'success',
+  name: "success",
+  label: "发布",
+  icon: "success",
   tooltip: true,
   func: () => {
-    console.log("我是刷新")
+    console.log("我是刷新");
   }
-}
+};
 
 //下架
 export const Cancel = {
-  name: 'remove',
-  label: '停止',
-  icon: 'remove',
+  name: "remove",
+  label: "停止",
+  icon: "remove",
   tooltip: true,
   func: () => {
-    console.log("我是刷新")
+    console.log("我是刷新");
   }
-}
-
+};
