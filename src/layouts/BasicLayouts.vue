@@ -11,10 +11,11 @@
     </el-drawer>
     <SiderMenu :collapsed="isMobile ? true : collapsed"></SiderMenu>
     <el-container class="beauty-scroll">
-      <el-header :style="{padding:0}">
+      <el-header :style="{ padding: 0 }">
         <Header :collapsed="collapsed" @collapse="handleCollapsed"></Header>
       </el-header>
       <el-main>
+         <Tabs />
         <router-view></router-view>
       </el-main>
       <el-footer>
@@ -28,22 +29,24 @@
 import Header from "./Header";
 import SiderMenu from "./SiderMenu";
 import Footer from "./Footer";
+import Tabs from "@/components/tabs";
 import { mapState } from "vuex";
 
 export default {
   components: {
     Header,
+    Tabs,
     Footer,
-    SiderMenu
+    SiderMenu,
   },
   data() {
     return {
       collapsed: false,
-      direction: "ltr"
+      direction: "ltr",
     };
   },
   computed: {
-    ...mapState("setting", ["isMobile"])
+    ...mapState("setting", ["isMobile"]),
   },
   methods: {
     onDrawerChange(show) {
@@ -51,8 +54,8 @@ export default {
     },
     handleCollapsed(collapsed) {
       this.collapsed = collapsed;
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -3,7 +3,9 @@
     <StepForm ref="form" :formList="formList" :entity="entity"></StepForm>
     <span class="dialog-footer" style="padding-top: 10px;">
       <el-button type="primary" size="small" @click="nextStep">提交</el-button>
-      <el-button size="small" style="margin-left: 10px" @click="prevStep">上一步</el-button>
+      <el-button size="small" style="margin-left: 10px" @click="prevStep"
+        >上一步</el-button
+      >
     </span>
   </div>
 </template>

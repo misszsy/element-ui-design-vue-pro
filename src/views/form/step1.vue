@@ -2,7 +2,9 @@
   <div>
     <StepForm ref="form" :formList="formList" :entity="entity" />
     <span class="dialog-footer" style="padding-top: 10px;">
-      <el-button type="primary" size="small" @click="nextStep">下一步</el-button>
+      <el-button type="primary" size="small" @click="nextStep"
+        >下一步</el-button
+      >
     </span>
   </div>
 </template>

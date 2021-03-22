@@ -82,11 +82,11 @@ export default {
 .noticeButton {
   width: 100%;
   height: 100%;
-  padding: 0 12px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   transition: all 0.3s;
-  font-size: 16px;
+  font-size: 18px;
 }
 .badge {
   /deep/ .el-badge__content {

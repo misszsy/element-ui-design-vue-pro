@@ -1,7 +1,12 @@
 <template>
   <el-row :gutter="16">
     <el-col :md="24" :lg="6">
-      <el-form ref="form" label-position="top" :model="entity" label-width="80px">
+      <el-form
+        ref="form"
+        label-position="top"
+        :model="entity"
+        label-width="80px"
+      >
         <el-form-item label="昵称">
           <el-input v-model="entity.name" placeholder="昵称"></el-input>
         </el-form-item>
@@ -15,10 +20,16 @@
           <el-input v-model="entity.pasword" placeholder="登录密码"></el-input>
         </el-form-item>
         <el-form-item label="个人简介">
-          <el-input type="textarea" v-model="entity.desc" placeholder="个人简介"></el-input>
+          <el-input
+            type="textarea"
+            v-model="entity.desc"
+            placeholder="个人简介"
+          ></el-input>
         </el-form-item>
         <el-form-item align="center">
-          <el-button size="small" type="primary" @click="onSubmit">更新基本信息</el-button>
+          <el-button size="small" type="primary" @click="onSubmit"
+            >更新基本信息</el-button
+          >
         </el-form-item>
       </el-form>
     </el-col>
@@ -40,8 +51,7 @@
 <script>
 export default {
   data() {
-    return {
-    }
+    return {};
   },
   computed: {
     entity() {
